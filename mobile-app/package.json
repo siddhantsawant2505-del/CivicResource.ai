@@ -1,0 +1,29 @@
+{
+  "name": "civicresource-mobile",
+  "version": "1.0.0",
+  "private": true,
+  "main": "node_modules/expo/AppEntry.js",
+  "scripts": {
+    "start": "expo start --port 8082",
+    "android": "set \"JAVA_HOME=C:\\Program Files\\Java\\jdk-17.0.11\" && set \"PATH=%JAVA_HOME%\\bin;%PATH%\" && expo run:android --port 8082",
+    "ios": "expo run:ios",
+    "web": "expo start --web --port 8082"
+  },
+  "dependencies": {
+    "@react-native-async-storage/async-storage": "1.23.1",
+    "@react-native-community/netinfo": "11.3.1",
+    "axios": "^1.8.4",
+    "expo": "~51.0.28",
+    "expo-location": "~17.0.1",
+    "expo-notifications": "~0.28.19",
+    "expo-status-bar": "~1.12.1",
+    "react": "18.2.0",
+    "react-native": "0.74.5",
+    "react-native-maps": "1.14.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.24.0",
+    "@types/react": "~18.2.79",
+    "typescript": "^5.4.5"
+  }
+}

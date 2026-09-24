@@ -1,0 +1,29 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "seed": "node src/scripts/seeder.js",
+    "simulate:worker": "node src/scripts/simulateWorkerJourney.js",
+    "cleanup:seed:dry": "node src/scripts/cleanupSeedData.js --dry-run",
+    "cleanup:seed": "node src/scripts/cleanupSeedData.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.0",
+    "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
+    "mongoose": "^9.3.3"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+}
