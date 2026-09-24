@@ -1,0 +1,120 @@
+@import 'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Sora:wght@400;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 210 20% 98%;
+    --foreground: 221 39% 11%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 221 39% 11%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 221 39% 11%;
+
+    --primary: 19 100% 50%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 244 75% 59%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 210 20% 96%;
+    --muted-foreground: 215 16% 47%;
+
+    --accent: 19 100% 50%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
+
+    --warning: 38 92% 50%;
+    --warning-foreground: 210 40% 98%;
+
+    --success: 161 94% 30%;
+    --success-foreground: 210 40% 98%;
+
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 19 100% 50%;
+
+    --radius: 1rem;
+
+    --sidebar-background: 210 20% 97%;
+    --sidebar-foreground: 221 39% 11%;
+    --sidebar-primary: 19 100% 50%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 210 20% 95%;
+    --sidebar-accent-foreground: 221 39% 11%;
+    --sidebar-border: 214 32% 91%;
+    --sidebar-ring: 19 100% 50%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border selection:bg-primary/20 selection:text-primary;
+  }
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-feature-settings: "cv11", "ss01";
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-headline tracking-tighter;
+  }
+}
+
+@layer components {
+  .tactile-slab {
+    @apply bg-card border border-border/50 rounded-tactile shadow-tactile transition-all duration-300;
+  }
+  .tactile-slab:hover {
+    @apply shadow-plinth border-border/80 -translate-y-0.5;
+  }
+
+  .plinth-card {
+    @apply bg-card border border-border/40 rounded-plinth shadow-plinth p-8;
+  }
+
+  .glass-header {
+    @apply bg-white/80 backdrop-blur-xl border-b border-border/40 sticky top-0 z-50;
+  }
+
+  .btn-tactile {
+    @apply bg-primary text-primary-foreground font-black uppercase tracking-[0.2em] text-[10px] px-8 py-4 rounded-xl shadow-lg shadow-primary/20 transition-all active:scale-95 hover:shadow-xl hover:shadow-primary/30;
+  }
+
+  .concierge-input {
+    @apply bg-muted/30 border-2 border-transparent focus:border-primary focus:bg-white rounded-2xl px-6 py-4 text-sm font-bold transition-all outline-none;
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  @apply bg-transparent;
+}
+::-webkit-scrollbar-thumb {
+  @apply bg-muted-foreground/20 rounded-full hover:bg-muted-foreground/40 transition-colors;
+}
+
+/* Increase tiny utility text sizes for Devanagari scripts. */
+:root[data-public-locale-script="indic"] .text-\[9px\] {
+  font-size: 11px;
+}
+
+:root[data-public-locale-script="indic"] .text-\[10px\] {
+  font-size: 12px;
+}
+
+:root[data-public-locale-script="indic"] .text-\[11px\] {
+  font-size: 13px;
+}
+
+:root[data-public-locale-script="indic"] .concierge-input {
+  font-size: 1rem;
+}
