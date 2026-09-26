@@ -1,5 +1,8 @@
 # Quick Start & Testing Guide
 
+> **Prerequisites:** MongoDB must be running and `server/.env` must define `MONGODB_URI`
+> (e.g. `mongodb://127.0.0.1:27017/civicresourceai_dev`). With Docker: `docker compose up -d`.
+
 ## 1️⃣ Reset & Seed Database
 
 ```bash
@@ -16,6 +19,10 @@ This creates:
 
 ---
 
+> **One-command alternative:** from the repository root, `npm run dev` starts all three
+> services (and `npm run health` checks that MongoDB, the API, the AI engine, and the client
+> are all reachable). The manual steps below do the same thing in separate terminals.
+
 ## 2️⃣ Start All Services
 
 ```bash
@@ -25,7 +32,7 @@ cd server && npm run dev
 
 # Terminal 2
 cd client && npm run dev
-# Expected: Frontend on http://localhost:5173
+# Expected: Frontend on http://localhost:8080
 
 # Terminal 3
 cd ai-engine && python main.py
@@ -38,7 +45,7 @@ cd ai-engine && python main.py
 
 ### **A. Admin - Dispatch an Incident**
 
-1. Open http://localhost:5173
+1. Open http://localhost:8080
 2. Click "Login"
 3. Enter:
    - Email: `admin@civicflow.ai`

@@ -393,7 +393,7 @@ python main.py
 - Hit submit → Goes to backend as unassigned incident
 
 **Step B: Admin Dispatches**
-- Open http://localhost:5173 in browser
+- Open http://localhost:8080 in browser
 - Login: `admin@civicflow.ai` / `admin123`
 - Go to DispatchSystem
 - Click on the traffic complaint
@@ -460,7 +460,7 @@ Creates: 2 admin users + 10 worker users + 10 personnel + 14 incidents
 ### Run Development
 ```bash
 cd server && npm run dev     # Backend on :5000
-cd client && npm run dev     # Frontend on :5173
+cd client && npm run dev     # Frontend on :8080
 cd ai-engine && python main.py  # AI on :8000
 ```
 

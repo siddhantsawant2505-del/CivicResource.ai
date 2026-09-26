@@ -1,0 +1,12 @@
+{
+  "name": "civicresource-ai",
+  "version": "1.0.0",
+  "private": true,
+  "description": "CivicResource.ai monorepo dev tooling",
+  "type": "module",
+  "scripts": {
+    "dev": "node scripts/dev.mjs",
+    "seed": "npm --prefix server run seed",
+    "health": "node scripts/health.mjs"
+  }
+}

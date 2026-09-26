@@ -1,0 +1,20 @@
+# CivicResource.ai — local development services
+#
+# Start MongoDB with:  docker compose up -d
+# Stop with:           docker compose down
+#
+# Connection string matches server/.env:
+#   mongodb://127.0.0.1:27017/civicresourceai_dev
+
+services:
+  mongo:
+    image: mongo:7
+    container_name: civicresource-mongo
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:

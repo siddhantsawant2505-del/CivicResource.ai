@@ -56,4 +56,4 @@ src/
 npm install
 npm run dev
 ```
-The client will run on `http://localhost:5173`.
+The client will run on `http://localhost:8080`.

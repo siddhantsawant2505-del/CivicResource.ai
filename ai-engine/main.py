@@ -14,6 +14,14 @@ import spacy
 import re
 import os
 import joblib
+from dotenv import load_dotenv
+
+# Load variables from ai-engine/.env, resolved relative to this file so it works
+# no matter which directory the engine is launched from.
+load_dotenv(os.path.join(os.path.dirname(os.path.abspath(__file__)), ".env"))
+
+AI_ENGINE_HOST = os.getenv("AI_ENGINE_HOST", "0.0.0.0")
+AI_ENGINE_PORT = int(os.getenv("AI_ENGINE_PORT", "8000"))
 
 app = FastAPI(title="CivicFlow AI Engine")
 
@@ -880,4 +888,5 @@ if __name__ == "__main__":
     if sys.platform == "win32":
         asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 
-    uvicorn.run(app, host="0.0.0.0", port=8000, timeout_keep_alive=10)
+    print(f"Starting CivicFlow AI Engine on http://{AI_ENGINE_HOST}:{AI_ENGINE_PORT}")
+    uvicorn.run(app, host=AI_ENGINE_HOST, port=AI_ENGINE_PORT, timeout_keep_alive=10)

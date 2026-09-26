@@ -94,6 +94,10 @@ The engine includes a suite of verification and training tools:
    ```
    *Starts on [http://localhost:8000](http://localhost:8000)*
 
+   The port/host are configurable via `ai-engine/.env` (`AI_ENGINE_PORT`, `AI_ENGINE_HOST`).
+   If port `8000` is already taken on your machine, pick another port and point the backend
+   at it with `AI_ENGINE_URL` in `server/.env`.
+
 3. **Retrain Models**:
    ```bash
    curl -X POST http://localhost:8000/model/train

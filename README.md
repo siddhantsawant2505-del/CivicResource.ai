@@ -78,15 +78,47 @@ graph TD
 
 ## 🚀 Local Setup
 
-1. **Install Dependencies**:
-   - `server/`: `npm install`
-   - `client/`: `npm install`
-   - `ai-engine/`: `pip install -r requirements.txt`
+### 0. Prerequisites
+- **Node.js 18+** and **Python 3.10+**
+- **MongoDB** running locally (or a MongoDB Atlas connection string)
+  - With Docker: `docker compose up -d` (uses the included `docker-compose.yml`)
+  - Or install MongoDB Community Server and start `mongod`
 
-2. **Run Services**:
-   - `server/`: `npm run dev`
-   - `client/`: `npm run dev`
-   - `ai-engine/`: `uvicorn main:app --reload --port 8000`
+### 1. Configure Environment
+- `server/.env` — set `MONGODB_URI`, `JWT_SECRET`, `PORT`, `NODE_ENV`, `AI_ENGINE_URL`
+- `client/.env` — set `VITE_API_BASE_URL` (defaults to `http://localhost:5000/api`)
+
+### 2. Install Dependencies
+- `server/`: `npm install`
+- `client/`: `npm install`
+- `ai-engine/`: `pip install -r requirements.txt`
+
+### 3. Seed the Database
+- From the repository root: `npm run seed` (same as `server/`: `npm run seed`)
+
+### 4. Run Services
+
+Start all three services with one command from the repository root:
+
+```bash
+npm run dev
+```
+
+They become available at:
+- Backend API → http://localhost:5000
+- Web client → http://localhost:8080
+- AI engine → http://localhost:8000
+
+Verify everything is reachable (MongoDB, API, AI engine, client):
+
+```bash
+npm run health
+```
+
+Or start each service manually in separate terminals:
+- `server/`: `npm run dev` → http://localhost:5000
+- `client/`: `npm run dev` → http://localhost:8080
+- `ai-engine/`: `python main.py` → http://localhost:8000
 
 ---
 ## ✅ Latest Updates (Apr 2026)
