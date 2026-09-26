@@ -77,6 +77,12 @@ export default function DispatchSystem() {
         };
   }, []);
 
+  // Clear the worker selection when the target incident changes, so a worker picked
+  // for a previous incident can never be submitted against a different one.
+  useEffect(() => {
+    setSelectedPersonnelIds([]);
+  }, [selectedIncident?._id]);
+
     const handleAbortProtocol = async () => {
         if (!selectedIncident) {
             toast.error("No active protocol to abort");
@@ -89,6 +95,31 @@ export default function DispatchSystem() {
         setIsDispatching(false);
         await fetchData();
         toast.success(`Dispatch protocol aborted for: ${abortedTitle}`);
+    };
+
+    // Turns the backend's detailed assign results into an honest toast. The API used to
+    // report success even when every selected worker was skipped as a type mismatch.
+    const notifyDispatchOutcome = (data: any) => {
+        const results: any[] = Array.isArray(data?.results) ? data.results : [];
+        const dispatched = results.filter((r) => r.status === 'dispatched').length;
+        const queued = results.filter((r) => r.status === 'queued').length;
+
+        if (dispatched > 0) {
+            toast.success(`Dispatched ${dispatched} unit${dispatched > 1 ? 's' : ''}`);
+            return;
+        }
+        if (queued > 0) {
+            toast.info(`Queued ${queued} unit${queued > 1 ? 's' : ''} — selected worker(s) are busy`);
+            return;
+        }
+
+        const mismatch = results.find((r) => r.status === 'skipped_type_mismatch');
+        if (mismatch) {
+            toast.error(`A ${mismatch.actualType} unit cannot handle a ${mismatch.expectedType} incident`);
+            return;
+        }
+        const offDuty = results.find((r) => r.status === 'skipped_off_duty');
+        toast.error(offDuty ? 'Selected worker is off duty' : (data?.message || 'No units were dispatched'));
     };
 
     const handleDispatch = async (resourceId?: string) => {
@@ -104,7 +135,7 @@ export default function DispatchSystem() {
                 personnelIds: selectedPersonnelIds,
                 resourceId 
             });
-            toast.success(data.message || "Dispatch successful");
+            notifyDispatchOutcome(data);
             setSelectedPersonnelIds([]);
             fetchData();
         } catch (err: any) {
@@ -165,7 +196,7 @@ export default function DispatchSystem() {
             });
             setSelectedIncident(incident);
             setSelectedPersonnelIds([chosenPersonnel._id]);
-            toast.success(data.message || "Dispatch successful");
+            notifyDispatchOutcome(data);
             await fetchData();
         } catch (err: any) {
             toast.error(err.response?.data?.message || "Dispatch failed");
@@ -517,6 +548,13 @@ export default function DispatchSystem() {
 
     const typeMatchedResources = filteredResources;
 
+    // Only offer workers whose service type can actually handle the selected incident.
+    // Without this the list showed every unit and the backend silently skipped mismatches.
+    const requiredPersonnelType = selectedIncident ? expectedPersonnelTypeForIncident(selectedIncident) : null;
+    const eligiblePersonnel = requiredPersonnelType
+        ? personnel.filter((p: any) => String(p?.type || '').toLowerCase() === requiredPersonnelType)
+        : personnel;
+
     const formatCoord = (n?: number) => (typeof n === 'number' ? n.toFixed(4) : 'NA');
 
     const resourcePanel = (
@@ -552,10 +590,14 @@ export default function DispatchSystem() {
                 <div>
                    <div className="flex items-center justify-between mb-4">
                       <h4 className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em]">Step 1: Select Personnel</h4>
-                      <span className="text-[8px] font-bold text-slate-500 uppercase tracking-widest">{personnel.length} Units Online</span>
+                      <span className="text-[8px] font-bold text-slate-500 uppercase tracking-widest">
+                        {requiredPersonnelType
+                           ? `${eligiblePersonnel.length} ${requiredPersonnelType} Unit${eligiblePersonnel.length === 1 ? '' : 's'} Eligible`
+                           : `${personnel.length} Units Online`}
+                      </span>
                    </div>
                    <div className="space-y-2">
-                       {personnel
+                       {eligiblePersonnel
                         .sort((a, b) => {
                            if (a.status === 'off-duty' && b.status !== 'off-duty') return 1;
                            if (a.status !== 'off-duty' && b.status === 'off-duty') return -1;
@@ -616,6 +658,11 @@ export default function DispatchSystem() {
                              </div>
                           );
                         })}
+                       {requiredPersonnelType && eligiblePersonnel.length === 0 && (
+                          <p className="text-[9px] font-black text-amber-400 uppercase tracking-widest p-3 border border-amber-500/20 rounded-xl bg-amber-500/5">
+                             No eligible {requiredPersonnelType} units right now
+                          </p>
+                       )}
                    </div>
                 </div>
 

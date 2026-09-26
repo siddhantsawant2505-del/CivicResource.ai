@@ -465,8 +465,27 @@ export const assignPersonnel = async (req, res) => {
     
     await incident.save();
 
+    const dispatchedCount = results.filter((r) => r.status === 'dispatched').length;
+    const queuedCount = results.filter((r) => r.status === 'queued').length;
+    const skippedCount = results.filter((r) => String(r.status).startsWith('skipped')).length;
+
+    let message;
+    if (dispatchedCount > 0) {
+      message = `Dispatched ${dispatchedCount} personnel`;
+    } else if (queuedCount > 0) {
+      message = `Queued ${queuedCount} personnel (all selected units were busy)`;
+    } else {
+      const mismatch = results.find((r) => r.status === 'skipped_type_mismatch');
+      message = mismatch
+        ? `No personnel dispatched: a ${mismatch.actualType} unit cannot handle a ${mismatch.expectedType} incident`
+        : 'No personnel dispatched';
+    }
+
     res.status(200).json({
-      message: `Processed ${idsToProcess.length} personnel for dispatch`,
+      message,
+      dispatched: dispatchedCount,
+      queued: queuedCount,
+      skipped: skippedCount,
       results,
       incident
     });
